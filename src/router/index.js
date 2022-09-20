@@ -3,6 +3,9 @@ import VueRouter from 'vue-router'
 import mainPage from '@/pages/mainPage'
 import ProductCart from '@/pages/ProductCart'
 import BasketPage from '@/pages/BasketPage'
+import NotFoundPage from '@/pages/NotFoundPage'
+import OrderPage from '@/pages/OrderPage'
+import OrderInfoPage from '@/pages/OrderInfoPage'
 
 Vue.use(VueRouter)
 
@@ -21,6 +24,21 @@ const routes = [
     path: '/cart-product/',
     name: 'basket',
     component: BasketPage
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: OrderPage
+  },
+  {
+    path: '/order/:id',
+    name: 'orderInfo',
+    component: OrderInfoPage
+  },
+  {
+    path: '*',
+    name: 'NotFoundPage',
+    component: NotFoundPage
   }
 ]
 

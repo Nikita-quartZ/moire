@@ -1,7 +1,6 @@
 <template>
   <main class="content container">
     <div class="content__top">
-
       <div class="content__row">
         <h1 class="content__title">
           Каталог
@@ -22,6 +21,8 @@
         :category-ids.sync="categoryIds"
       />
       <section class="catalog">
+        <div class="lds-ellipsis" v-if="productsLoading"><div></div><div></div><div></div><div></div></div>
+        <div v-if="productsLoadingFailed">Произошла ошибка при загрузки товаров <button @click.prevent="updateAllProducts">Попробовать ещё раз</button></div>
         <ProductList :products="productData.items" v-if="productData" />
         <BasePagination v-model="page" :total="total" :per-page="limit"/>
       </section>
@@ -55,7 +56,9 @@ export default {
       colorIds: [],
       materialIds: [],
       seasonIds: [],
-      text: 'товаров'
+      text: 'товаров',
+      productsLoading: false,
+      productsLoadingFailed: false
     }
   },
   methods: {
@@ -63,6 +66,8 @@ export default {
       return changeWord(number)
     },
     updateAllProducts () {
+      this.productsLoading = true
+      this.productsLoadingFailed = false
       clearTimeout(this.loadProducts)
       this.loadProducts = setTimeout(() => {
         axios.get(API_BASE_URL + '/api/products', {
@@ -79,7 +84,10 @@ export default {
         }).then(responce => {
           this.productData = responce.data
           this.total = responce.data.pagination.pages
-        })
+        }).catch(() => (this.productsLoadingFailed = true))
+          .then(() => {
+            this.productsLoading = false
+          })
       }, 0)
     }
   },
@@ -111,3 +119,63 @@ export default {
   }
 }
 </script>
+
+<style>
+  .lds-ellipsis {
+  display: block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #000;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
+</style>
