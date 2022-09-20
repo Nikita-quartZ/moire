@@ -16,9 +16,9 @@
     </span>
 
     <ul class="colors colors--black">
-      <li class="colors__item" v-for="color in product.colors" :key="color.color.code">
+      <li class="colors__item" v-for="(color, index) in product.colors" :key="color.color.code">
         <label class="colors__label">
-          <input class="colors__radio sr-only" type="radio" name="color-1" :value="color.color.code" checked="">
+          <input class="colors__radio sr-only" type="radio" name="color-1" :value="index" v-model.number="activeImage">
           <span class="colors__value" :style="{backgroundColor: color.color.code}">
           </span>
         </label>
@@ -30,6 +30,11 @@
 <script>
 import numberFormat from '@/helpers/numberFormat'
 export default {
+  data () {
+    return {
+      activeImage: 0
+    }
+  },
   filters: {
     numberFormat
   },
@@ -37,9 +42,9 @@ export default {
   methods: {
     changeProduct () {
       if (this.product.id !== 14) {
-        return this.product.colors[0].gallery[0].file.url
+        return this.product.colors[this.activeImage].gallery[0].file.url
       } else {
-        return this.product.colors[1].gallery[0].file.url
+        return this.product.colors[this.activeImage + 1].gallery[0].file.url
       }
     }
   }

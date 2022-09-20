@@ -1,17 +1,19 @@
 <template>
-  <main class="content container" v-if="productsData">
+  <main class="content container" v-if="productLoadingFailed">Ошибка загрузки</main>
+  <main class="content container" v-else-if="productLoading"><div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div></main>
+  <main class="content container" v-else>
     <div class="content__top">
       <ul class="breadcrumbs">
-        <router-link tag="a" :to="{name: 'main'}" class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="index.html">
+        <li class="breadcrumbs__item">
+          <router-link tag="a" :to="{name: 'main'}" class="breadcrumbs__link" href="index.html">
             Каталог
-          </a>
-        </router-link>
-        <router-link tag="a" :to="{name: 'main'}" class="breadcrumbs__item">
-          <a class="breadcrumbs__link" href="#">
+          </router-link>
+        </li>
+        <li class="breadcrumbs__item">
+          <router-link tag="a" :to="{name: 'main'}" class="breadcrumbs__link" href="#">
             {{ productsData.category.title }}
-          </a>
-        </router-link>
+          </router-link>
+        </li>
         <li class="breadcrumbs__item">
           <a class="breadcrumbs__link">
             {{ productsData.title }}
@@ -72,6 +74,10 @@
               В корзину
             </button>
           </form>
+          <div v-if="productAdded">Товар добавлен в корзину</div>
+          <div v-else-if="productAddSending">Товар добавляется в корзину</div>
+          <div v-else-if="productAddFail.colorId">{{ productAddFail.colorId }}</div>
+          <div v-else-if="productAddFail.sizeId">{{ productAddFail.sizeId }}</div>
         </div>
       </div>
 
@@ -133,18 +139,28 @@ export default {
       activeImg: null,
       amount: 1,
       productColor: 0,
-      productSize: 0
+      productSize: 0,
+      productLoading: false,
+      productLoadingFailed: false,
+      productAdded: false,
+      productAddSending: false,
+      productAddFail: {}
     }
   },
   methods: {
     ...mapActions(['addProductToCart']),
     addToCart () {
+      this.productAddFail = null
       this.productAdded = false
       this.productAddSending = true
       this.addProductToCart({ productId: Number(this.$route.params.id), amount: this.amount, color: this.productColor, size: this.productSize })
         .then(() => {
-          this.productAdded = true
           this.productAddSending = false
+          this.productAdded = true
+        })
+        .catch(responce => {
+          this.productAddSending = false
+          this.productAddFail = responce.response.data.error.request
         })
     },
     loadProducts () {
@@ -155,8 +171,8 @@ export default {
           this.productsData = response.data
           this.activeImg = this.productsData.colors[0].gallery[0].file.url
         })
-        // .catch(() => { this.productLoadingFailed = true })
-        // .then(() => { this.productLoading = false })
+        .catch(() => { this.productLoadingFailed = true })
+        .then(() => { this.productLoading = false })
     },
     changeActiveImg (url) {
       this.activeImg = url
@@ -172,4 +188,61 @@ export default {
   .form__select {
     cursor: pointer;
   }
+  .lds-ellipsis {
+  display: block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+  margin: 0 auto;
+}
+.lds-ellipsis div {
+  position: absolute;
+  top: 33px;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  background: #000;
+  animation-timing-function: cubic-bezier(0, 1, 1, 0);
+}
+.lds-ellipsis div:nth-child(1) {
+  left: 8px;
+  animation: lds-ellipsis1 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(2) {
+  left: 8px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(3) {
+  left: 32px;
+  animation: lds-ellipsis2 0.6s infinite;
+}
+.lds-ellipsis div:nth-child(4) {
+  left: 56px;
+  animation: lds-ellipsis3 0.6s infinite;
+}
+@keyframes lds-ellipsis1 {
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes lds-ellipsis3 {
+  0% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+@keyframes lds-ellipsis2 {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(24px, 0);
+  }
+}
+
 </style>

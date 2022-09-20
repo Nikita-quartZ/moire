@@ -41,7 +41,7 @@
         <ul class="check-list">
           <li class="check-list__item" v-for="material in currentMaterials.items" :key="material.title">
             <label class="check-list__label">
-              <input class="check-list__check sr-only" type="checkbox" name="material" :value="material.id" @change="changeMaterials(material.id)">
+              <input class="check-list__check sr-only" type="checkbox" name="material" :value="material.id" seasons="materials">
               <span class="check-list__desc">
                 {{ material.title }}
                 <span>({{ material.productsCount }})</span>
@@ -56,7 +56,7 @@
         <ul class="check-list">
           <li class="check-list__item" v-for="season in currentSeasons.items" :key="season.title">
             <label class="check-list__label">
-              <input class="check-list__check sr-only" type="checkbox" name="collection" :value="season.id" @change="changeSeasons(season.id)">
+              <input class="check-list__check sr-only" type="checkbox" name="collection" :value="season.id" v-model="seasons">
               <span class="check-list__desc">
                 {{ season.title }}
                 <span>({{ season.productsCount }})</span>
@@ -95,6 +95,11 @@ export default {
       seasons: []
     }
   },
+  computed: {
+    showReset () {
+      return this.priceFrom || this.priceTo || this.category || this.materials.length || this.colors.length || this.seasons.length
+    }
+  },
   methods: {
     loadMaterials () {
       axios.get(API_BASE_URL + '/api/materials')
@@ -116,29 +121,6 @@ export default {
         .then(response => { this.currentSeasons = response.data })
     },
 
-    changeColors (id) {
-      if (!this.materials.includes(id)) {
-        this.materials.push(id)
-      } else {
-        this.materials = this.materials.filter(item => id !== item)
-      }
-    },
-
-    changeMaterials (id) {
-      if (!this.materials.includes(id)) {
-        this.materials.push(id)
-      } else {
-        this.materials = this.materials.filter(item => id !== item)
-      }
-    },
-
-    changeSeasons (id) {
-      if (!this.seasons.includes(id)) {
-        this.seasons.push(id)
-      } else {
-        this.seasons = this.seasons.filter(item => id !== item)
-      }
-    },
     submit () {
       this.$emit('update:minPrice', this.priceFrom)
       this.$emit('update:maxPrice', this.priceTo)
@@ -148,6 +130,12 @@ export default {
       this.$emit('update:categoryIds', this.category)
     },
     reset () {
+      this.priceFrom = 0
+      this.priceTo = 0
+      this.category = 0
+      this.colors = []
+      this.materials = []
+      this.seasons = []
       this.$emit('update:minPrice', 0)
       this.$emit('update:maxPrice', 0)
       this.$emit('update:colorIds', 0)

@@ -14,7 +14,7 @@
       </span>
     </p>
     <span class="product__code">
-      Артикул: {{ product.id }}
+      Артикул: {{ product.product.id }}
     </span>
 
     <formCounter :count.sync="amount" />
