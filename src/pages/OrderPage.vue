@@ -30,15 +30,15 @@
       <form class="cart__form form" action="#" method="POST" @submit.prevent="order">
         <div class="cart__field">
           <div class="cart__data">
-            <baseFormText v-model="formData.name" :error="formError.name" title="ФИО"
+            <BaseFormText v-model="formData.name" :error="formError.name" title="ФИО"
               placeholder="Введите ваше полное имя" type="text" />
-            <baseFormText v-model="formData.address" :error="formError.address" title="Адрес доставки"
+            <BaseFormText v-model="formData.address" :error="formError.address" title="Адрес доставки"
               placeholder="Введите ваш адрес" type="text" />
-            <baseFormText v-model="formData.phone" :error="formError.phone" title="Телефон"
+            <BaseFormText v-model="formData.phone" :error="formError.phone" title="Телефон"
               placeholder="Введите ваш телефон" type="tel" />
-            <baseFormText v-model="formData.email" :error="formError.email" title="Email"
+            <BaseFormText v-model="formData.email" :error="formError.email" title="Email"
               placeholder="Введите ваш Email" type="email" />
-            <baseFormTextArea v-model="formData.comment" :error="formError.comment" title="Комментарий к заказу"
+            <BaseFormTextArea v-model="formData.comment" :error="formError.comment" title="Комментарий к заказу"
               placeholder="Ваши пожелания" />
           </div>
 
@@ -87,12 +87,12 @@
           </div>
         </div>
 
-        <orderList :products="orderListInfo()">
+        <OrderList :products="orderListInfo()">
           <button class="cart__button button button--primery" type="submit">
             Оформить заказ
           </button>
           <div v-show="formLoading">Загрузка товаров...</div>
-        </orderList>
+        </OrderList>
         <div class="cart__error form__error-block" v-show="formErrorMessage">
           <h4>Заявка не отправлена!</h4>
           <p>
@@ -105,9 +105,9 @@
 </template>
 
 <script>
-import baseFormTextArea from '@/components/BaseFormTextArea.vue'
-import baseFormText from '@/components/BaseFormText.vue'
-import orderList from '@/components/OrderList'
+import BaseFormTextArea from '@/components/BaseFormTextArea.vue'
+import BaseFormText from '@/components/BaseFormText.vue'
+import OrderList from '@/components/OrderList'
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 import { API_BASE_URL } from '@/config'
@@ -123,9 +123,9 @@ export default {
     }
   },
   components: {
-    baseFormTextArea,
-    baseFormText,
-    orderList
+    BaseFormTextArea,
+    BaseFormText,
+    OrderList
   },
   computed: {
     ...mapGetters({ totalPrice: 'cartTotalPrice' })
@@ -137,7 +137,7 @@ export default {
           ...this.$store.state.cartProductsData
         },
         totalPrice: this.totalPrice,
-        delevery: this.deleveryType
+        delivery: this.deliveryType
       }
     },
     order () {
@@ -154,7 +154,6 @@ export default {
         }
       })
         .then(responce => {
-          console.log(responce.data)
           this.formLoading = false
           this.$store.commit('resetCart')
           this.$store.commit('updateOrderInfo', responce.data)

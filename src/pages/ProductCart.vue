@@ -5,12 +5,12 @@
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
-          <router-link tag="a" :to="{name: 'main'}" class="breadcrumbs__link" href="index.html">
+          <router-link tag="a" :to="{name: 'main'}" class="breadcrumbs__link">
             Каталог
           </router-link>
         </li>
         <li class="breadcrumbs__item">
-          <router-link tag="a" :to="{name: 'main'}" class="breadcrumbs__link" href="#">
+          <router-link tag="a" :to="{name: 'main'}" class="breadcrumbs__link">
             {{ productsData.category.title }}
           </router-link>
         </li>
@@ -122,16 +122,12 @@
 <script>
 import { API_BASE_URL } from '@/config'
 import axios from 'axios'
-import numberFormat from '@/helpers/numberFormat'
-import FormCounter from '@/components/formCounter.vue'
+import FormCounter from '@/components/FormCounter'
 import { mapActions } from 'vuex'
 
 export default {
   components: {
     FormCounter
-  },
-  filters: {
-    numberFormat
   },
   data () {
     return {

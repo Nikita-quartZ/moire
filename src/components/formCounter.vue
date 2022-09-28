@@ -20,8 +20,10 @@
 
 <script>
 export default {
-  props: ['count'],
-  name: 'formCounter',
+  props: {
+    count: Number
+  },
+  name: 'FormCounter',
   computed: {
     amount: {
       get () {

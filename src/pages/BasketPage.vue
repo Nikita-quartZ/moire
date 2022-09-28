@@ -19,7 +19,7 @@
           Корзина
         </h1>
         <span class="content__info">
-          {{ this.$store.state.cartProducts.length }} {{ changeWord(this.$store.state.cartProducts.length) }}
+          {{ this.$store.state.cartProducts.length }} {{ Pluralize(this.$store.state.cartProducts.length) }}
         </span>
       </div>
     </div>
@@ -28,7 +28,7 @@
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
           <ul class="cart__list">
-            <cartItem v-for="product in this.$store.state.cartProductsData" :key="product.id" :product="product"/>
+            <CartItem v-for="product in this.$store.state.cartProductsData" :key="product.id" :product="product"/>
           </ul>
         </div>
 
@@ -51,16 +51,16 @@
 
 <script>
 
-import changeWord from '@/helpers/changeWord'
-import cartItem from '@/components/cartItem.vue'
+import Pluralize from '@/helpers/Pluralize'
+import CartItem from '@/components/CartItem'
 import { mapGetters } from 'vuex'
 export default {
   components: {
-    cartItem
+    CartItem
   },
   methods: {
-    changeWord (number) {
-      return changeWord(number)
+    Pluralize (number) {
+      return Pluralize(number)
     }
   },
   computed: {

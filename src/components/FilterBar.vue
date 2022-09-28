@@ -80,7 +80,14 @@
 import { API_BASE_URL } from '@/config'
 import axios from 'axios'
 export default {
-  props: ['minPrice', 'maxPrice', 'colorIds', 'materialIds', 'seasonIds', 'categoryIds'],
+  props: {
+    minPrice: Number,
+    maxPrice: Number,
+    colorIds: Array,
+    materialIds: Array,
+    seasonIds: Array,
+    categoryIds: Number
+  },
   data () {
     return {
       priceFrom: 0,

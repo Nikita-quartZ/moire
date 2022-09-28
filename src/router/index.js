@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import mainPage from '@/pages/mainPage'
+import mainPage from '@/pages/MainPage'
 import ProductCart from '@/pages/ProductCart'
 import BasketPage from '@/pages/BasketPage'
 import NotFoundPage from '@/pages/NotFoundPage'

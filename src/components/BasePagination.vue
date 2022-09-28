@@ -39,7 +39,11 @@ export default {
     prop: 'page',
     event: 'paginate'
   },
-  props: ['page', 'total', 'perPage'],
+  props: {
+    page: Number,
+    total: Number,
+    perPage: Number
+  },
   methods: {
     changePage (page) {
       if (page <= this.total && page > 0) {

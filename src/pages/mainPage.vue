@@ -6,7 +6,7 @@
           Каталог
         </h1>
         <span class="content__info" v-if="productData">
-          {{ productData.pagination.total }} {{ changeWord(productData.pagination.total) }}
+          {{ productData.pagination.total }} {{ Pluralize(productData.pagination.total) }}
         </span>
       </div>
     </div>
@@ -36,7 +36,7 @@ import axios from 'axios'
 import BasePagination from '@/components/BasePagination'
 import ProductList from '@/components/ProductList'
 import FilterBar from '@/components/FilterBar'
-import changeWord from '@/helpers/changeWord'
+import Pluralize from '@/helpers/Pluralize'
 
 export default {
   components: {
@@ -62,8 +62,8 @@ export default {
     }
   },
   methods: {
-    changeWord (number) {
-      return changeWord(number)
+    Pluralize (number) {
+      return Pluralize(number)
     },
     updateAllProducts () {
       this.productsLoading = true

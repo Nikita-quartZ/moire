@@ -80,7 +80,7 @@
             </ul>
           </div>
 
-          <orderList :products="orderListInfo()" />
+          <OrderList :products="orderListInfo()" />
         </form>
       </section>
     </main>
@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import orderList from '@/components/OrderList'
+import OrderList from '@/components/OrderList'
 export default {
   created () {
     if (this.$store.state.orderInfo) {
@@ -101,7 +101,7 @@ export default {
     this.$store.dispatch('loadOrderInfo', this.$route.params.id)
   },
   components: {
-    orderList
+    OrderList
   },
   methods: {
     orderListInfo () {

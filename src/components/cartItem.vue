@@ -17,10 +17,10 @@
       Артикул: {{ product.product.id }}
     </span>
 
-    <formCounter :count.sync="amount" />
+    <FormCounter :count.sync="amount" />
 
     <b class="product__price">
-      {{ product.price * product.quantity | numberFormat }} ₽
+      {{ product.price * product.quantity | NumberFormat }} ₽
     </b>
 
     <button class="product__del button-del" type="button" aria-label="Удалить товар из корзины" @click.prevent="deleteProduct(product.id)">
@@ -32,16 +32,18 @@
 </template>
 
 <script>
-import formCounter from '@/components/formCounter.vue'
-import numberFormat from '@/helpers/numberFormat'
+import FormCounter from '@/components/FormCounter.vue'
+import NumberFormat from '@/helpers/NumberFormat'
 import { mapActions } from 'vuex'
 export default {
-  props: ['product'],
+  props: {
+    product: Object
+  },
   components: {
-    formCounter
+    FormCounter
   },
   filters: {
-    numberFormat
+    NumberFormat
   },
   computed: {
     amount: {
