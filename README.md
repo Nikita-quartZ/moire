@@ -5,7 +5,7 @@
 Ссылка на сайт:
 Для просмотра приложения необходимо запустить npm run serve. И далее в зависимости от того, какие порты свободны выйдет адрес сайта. Обычно это http://localhost:8080
 
-Ссылка на сайт: https://nikita-quartz.github.io/vue-app/#/
+Ссылка на сайт: https://moire-build.vercel.app/#/
 
 Приложение написанно с использованием Vue, VueX, Vue-Router, Javascript.
 
